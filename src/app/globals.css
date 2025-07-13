@@ -35,8 +35,139 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.mr-auto {
+  margin: 0 auto;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+/* Layout principal */
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #ffffff;
+  padding: 20px;
+  border-right: 1px solid #eee;
+}
+
+.brand {
+  font-size: 1.4rem;
+  line-height: 84.3%;
+  font-weight: bolder;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sidebar-label {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 84.3%;
+  letter-spacing: -4%;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.menu li:hover {
+  background: #f0f0f0;
+}
+
+.menu li.active {
+  background: #f3e9ff;
+  color: #7b4eff;
+}
+
+/* Main panel */
+.main-panel {
+  flex: 1;
+  background: #f4f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+  background: #fff;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-left h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.topbar-center h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.profile-icon {
+  font-size: 24px;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* Footer texto */
+.footer-warning {
+  text-align: right;
+  font-size: 13px;
+  color: #222;
+  padding: 10px 20px;
+}
+
+/* Card opcional si lo usas */
+.card {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.topbar-right {
+  display: flex;
+  justify-content: right;
+  width: 15%;
 }
