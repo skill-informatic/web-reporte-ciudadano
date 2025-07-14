@@ -32,7 +32,7 @@ export default function LoginPage() {
       <div className={styles.bg_transparent}>
         <div className={styles.container}>
           <form className={styles.loginBox} onSubmit={handleLogin}>
-            <h1>
+            <h1 className={styles.title}>
               Reporte <br /> CiudadanoMX
             </h1>
             <h2>Iniciar Sesión</h2>
