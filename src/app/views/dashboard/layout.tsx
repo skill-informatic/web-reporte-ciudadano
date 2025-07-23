@@ -1,10 +1,24 @@
+"use client";
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
   const { primary_title, secundary_title } = {
     primary_title: "Reporte CiudadanoMX",
     secundary_title: "Panel de Contenido",
   };
+
+  // Lista de rutas del menú
+  const menuItems = [
+    { href: "/views/dashboard/reports_main", icon: "📷", label: "Reportes" },
+    { href: "/views/dashboard/news", icon: "📰", label: "Noticias" },
+    { href: "/views/dashboard/places", icon: "📍", label: "Sitios de Interés" },
+    { href: "/views/dashboard/map", icon: "🗺️", label: "Mapa" },
+    { href: "/views/dashboard/account", icon: "👥", label: "Cuentas" },
+  ];
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -12,29 +26,25 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <p className="brand">{primary_title}</p>
         <p className="sidebar-label">{secundary_title}</p>
         <nav className="menu">
-          <ul>
-            <li className="active">
-              {/* /views/dashboard/reports_main */}
-              <span className="icon">📷</span> Reportes
-            </li>
-            <li>
-              <span className="icon">📰</span> Noticias
-            </li>
-            <li>
-              <span className="icon">📍</span> Sitios de Interés
-            </li>
-            <li>
-              <span className="icon">🗺️</span> Mapa
-            </li>
-            <li>
-              <span className="icon">👥</span> Cuentas
-            </li>
+          <ul className="list_ul">
+            {menuItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`list_li ${
+                    pathname === item.href ? "active" : ""
+                  }`}
+                >
+                  <span className="icon">{item.icon}</span> {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </aside>
 
       {/* Main */}
-      <main className="main-panel">
+      <div className="main-panel">
         <header className="topbar">
           <div className="topbar-left">
             <p>Mi Centro de Trabajo</p>
@@ -52,9 +62,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <footer className="footer-warning">
           <p>Create By Mario Cortez</p>
         </footer>
-      </main>
+      </div>
     </div>
   );
 };
 
-export default layout;
+export default Layout;
