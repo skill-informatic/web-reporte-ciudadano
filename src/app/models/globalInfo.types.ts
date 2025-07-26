@@ -1,4 +1,5 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
+import { ReactNode } from "react";
 
 export interface UserInfoType {
   id_user?: string;
@@ -95,11 +96,11 @@ export const registerOptionsError: typeRegisterOptionsError = {
 };
 
 export interface CardTypes {
-  id?: string;
+  id: string;
   name: string;
-  icono: React.JSX.Element | string;
-  action: () => void;
+  icono: React.JSX.Element | string | ReactNode;
   subtitle?: string;
+  action: (id: string) => void;
   //   action: (id: string) => void;
 }
 export const UploadImageErrors = {

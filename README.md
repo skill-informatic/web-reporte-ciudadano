@@ -36,9 +36,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## General
+
 - Component Alert
 - Login with change of user
 - Updated Title
+- location from layout
 - No poder pasar de login a otra ruta sin iniciar sesion
 - is not can change of login to other route it is not has start session
 - Configurar el estado global Redux

@@ -24,7 +24,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className="dashboard-layout">
       {/* Sidebar */}
       <aside className="sidebar">
-        <p className="brand">{primary_title}</p>
+        <Link className="brand" href={"/views/dashboard/reports_main"}>
+          {primary_title}
+        </Link>
+
         <p className="sidebar-label">{secundary_title}</p>
         <nav className="menu">
           <ul className="list_ul">
