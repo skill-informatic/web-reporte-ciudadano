@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
 import LoadingComponent from "@/app/components/LoadingComponent";
+import SnackbarComponent from "@/app/components/SnackbarComponent";
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
@@ -73,6 +74,11 @@ export default function LoginPage() {
             )}
             {errorMsg && <p className={styles.error}>{errorMsg}</p>}
           </form>
+          <SnackbarComponent
+            text="Error al iniciar sesion"
+            type="error"
+            open={true}
+          />
         </div>
       </div>
     </div>

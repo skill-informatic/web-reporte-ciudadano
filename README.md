@@ -38,8 +38,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## General
 
 - Component Alert
+- error uno tras otro desde redux
 - Login with change of user
-- Updated Title
+- Updated Title \*
 - location from layout
 - No poder pasar de login a otra ruta sin iniciar sesion
 - is not can change of login to other route it is not has start session
@@ -50,7 +51,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ### Reportes
 
 - Importar Todos los Iconos
-- Hacer el componente de cartas
+- Hacer el componente de cartas\*
 - tengo que hacer que solo admin tenga estado y municipio
 
 ### News
