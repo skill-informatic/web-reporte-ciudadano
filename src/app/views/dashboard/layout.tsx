@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+
   const { primary_title, secundary_title } = {
     primary_title: "Reporte CiudadanoMX",
     secundary_title: "Panel de Contenido",
@@ -32,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Link
                   href={item.href}
                   className={`list_li ${
-                    pathname === item.href ? "active" : ""
+                    pathname.startsWith(item.href) ? "active" : ""
                   }`}
                 >
                   <span className="icon">{item.icon}</span> {item.label}
