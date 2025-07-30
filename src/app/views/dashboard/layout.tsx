@@ -2,9 +2,13 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ProtectedRoute from "@/app/components/ProtectedRoute";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const user_info = useSelector((state: RootState) => state.context.user_info);
 
   const { primary_title, secundary_title } = {
     primary_title: "Reporte CiudadanoMX",
@@ -21,53 +25,60 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <div className="dashboard-layout">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <Link className="brand" href={"/views/dashboard/reports_main"}>
-          {primary_title}
-        </Link>
+    <ProtectedRoute>
+      <div className="dashboard-layout">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <Link className="brand" href={"/views/dashboard/reports_main"}>
+            {primary_title}
+          </Link>
 
-        <p className="sidebar-label">{secundary_title}</p>
-        <nav className="menu">
-          <ul className="list_ul">
-            {menuItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`list_li ${
-                    pathname.startsWith(item.href) ? "active" : ""
-                  }`}
-                >
-                  <span className="icon">{item.icon}</span> {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+          <p className="sidebar-label">{secundary_title}</p>
+          <nav className="menu">
+            <ul className="list_ul">
+              {menuItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`list_li ${
+                      pathname.startsWith(item.href) ? "active" : ""
+                    }`}
+                    prefetch
+                  >
+                    <span className="icon">{item.icon}</span> {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-      {/* Main */}
-      <div className="main-panel">
-        <header className="topbar">
-          <div className="topbar-left">
-            <p>Mi Centro de Trabajo</p>
-          </div>
-          <div className="topbar-center">
-            <h1>Acapulco De Juarez Guerrero</h1>
-          </div>
-          <div className="topbar-right">
-            <span className="profile-icon">👤</span>
-          </div>
-        </header>
+        {/* Main */}
+        <div className="main-panel">
+          <header className="topbar">
+            <div className="topbar-left">
+              <p>Mi Centro de Trabajo</p>
+            </div>
+            <div className="topbar-center">
+              <h1>
+                {user_info.city} {user_info.state}
+              </h1>
+            </div>
+            <div className="topbar-right">
+              <Link href={"/views/dashboard/profile"}>
+                <span className="profile-icon">👤</span>
+              </Link>
+            </div>
+          </header>
 
-        <div className="main-content">{children}</div>
+          <div className="main-content">{children}</div>
 
-        <footer className="footer-warning">
-          <p>Create By Mario Cortez</p>
-        </footer>
+          <footer className="footer-warning">
+            <p>Create By Mario Cortez</p>
+          </footer>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 

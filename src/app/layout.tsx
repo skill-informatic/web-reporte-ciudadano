@@ -7,6 +7,10 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "@/app/lib/theme";
 import { open_sans } from "./fonts";
+import { Provider } from "react-redux";
+
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./store";
 
 export default function RootLayout({
   children,
@@ -16,13 +20,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${open_sans.className} antialiased`}>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AppRouterCacheProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
 
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+                {children}
+              </ThemeProvider>
+            </AppRouterCacheProvider>
+          </PersistGate>
+        </Provider>
       </body>
     </html>
   );

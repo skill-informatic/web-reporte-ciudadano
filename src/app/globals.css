@@ -140,7 +140,8 @@ a {
 .topbar-right {
   display: flex;
   justify-content: right;
-  width: 15%;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 .profile-icon {

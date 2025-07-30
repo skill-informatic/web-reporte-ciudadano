@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { CardTypes } from "../models/globalInfo.types";
+import Link from "next/link";
 
 interface Types {
   cards: CardTypes[];
@@ -72,49 +73,50 @@ const CardContainer = ({ cards, withColumn }: Types) => {
               boxShadow: "4px 4px 5px 1px rgba(0, 0, 0, 0.4)",
             },
           }}
-          onClick={() => carta.action(carta.id)}
         >
-          <CardContent>
-            <Box
-              sx={{
-                backgroundColor: "#7E5BFF",
-                borderRadius: "50%",
-                width: "100px",
-                height: "100px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 1rem",
-              }}
-            >
-              <Box sx={{ color: "#fff" }}>{carta.icono}</Box>
-            </Box>
-
-            <Typography
-              variant="h6"
-              sx={{
-                color: "#767676",
-                fontSize: "1.1rem",
-              }}
-            >
-              {carta.name}
-            </Typography>
-
-            <Box component="div" sx={{ width: "150px", margin: "0 auto" }}>
-              <Typography
-                variant="subtitle2"
+          <Link href={carta.route}>
+            <CardContent>
+              <Box
                 sx={{
-                  fontWeight: "400",
-                  lineHeight: ".9rem",
-                  fontFamily: "Open Sans",
-                  fontSize: ".8rem",
-                  color: "#B0B0B0",
+                  backgroundColor: "#7E5BFF",
+                  borderRadius: "50%",
+                  width: "100px",
+                  height: "100px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 1rem",
                 }}
               >
-                {carta?.subtitle}
+                <Box sx={{ color: "#fff" }}>{carta.icono}</Box>
+              </Box>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#767676",
+                  fontSize: "1.1rem",
+                }}
+              >
+                {carta.name}
               </Typography>
-            </Box>
-          </CardContent>
+
+              <Box component="div" sx={{ width: "150px", margin: "0 auto" }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: "400",
+                    lineHeight: ".9rem",
+                    fontFamily: "Open Sans",
+                    fontSize: ".8rem",
+                    color: "#B0B0B0",
+                  }}
+                >
+                  {carta?.subtitle}
+                </Typography>
+              </Box>
+            </CardContent>
+          </Link>
         </Card>
       ))}
     </Grid>

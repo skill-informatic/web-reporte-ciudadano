@@ -11,31 +11,31 @@ const page = () => {
   const cards: CardTypes[] = [
     {
       id: "",
+      route: "",
       icono: <FaCamera size={50} />,
       name: "Subir Sitio",
       subtitle: "Registra un nuevo sitio de interés en tu localidad.",
-      action: () => console.log("Subir Sitio"),
     },
     {
       id: "",
+      route: "",
       icono: <FaRegFileAlt size={50} />,
       name: "Sitios",
       subtitle: "Explora todos los sitios registrados en la plataforma.",
-      action: () => console.log("Sitios"),
     },
     {
       id: "",
+      route: "",
       icono: <FaRegFileAlt size={50} />,
       name: "Mis Sitios",
       subtitle: "Consulta y administra los sitios que tú has registrado.",
-      action: () => console.log("Mis Sitios"),
     },
     {
       id: "",
+      route: "",
       icono: <FaMapMarkedAlt size={50} />,
       name: "Mapa de Sitios",
       subtitle: "Visualiza los sitios de interés sobre un mapa.",
-      action: () => console.log("Mapa de Sitios"),
     },
   ];
 

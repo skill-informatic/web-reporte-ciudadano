@@ -7,7 +7,9 @@ export interface UserInfoType {
   phone: string;
   role: "admin" | "supervisor" | "user";
   created_at: string;
-  updated_at: string;
+  updated_at: string | unknown;
+  city: string;
+  state: string;
 }
 export type UserUpdateInfo = Omit<UserInfoType, "created_at" | "role">;
 export interface Context {
@@ -98,9 +100,10 @@ export const registerOptionsError: typeRegisterOptionsError = {
 export interface CardTypes {
   id: string;
   name: string;
+  route: string;
   icono: React.JSX.Element | string | ReactNode;
   subtitle?: string;
-  action: (id: string) => void;
+  action?: (id: string) => void;
   //   action: (id: string) => void;
 }
 export const UploadImageErrors = {
@@ -211,7 +214,7 @@ export type TypesDataPostPlaces = {
   id_user: string;
   city: string;
   state: string;
-  status: "cerrado" | "abierto";
+  status: "close" | "open";
   location?: unknown;
   geohash?: string;
   created_at?: string | FieldValue | Timestamp;
