@@ -1,0 +1,9 @@
+.mt {
+  margin-top: 5rem;
+}
+.card {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+}

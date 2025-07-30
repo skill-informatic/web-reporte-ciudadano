@@ -1,19 +1,31 @@
 "use client";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebaseConfig";
+import { auth, getUserInfo } from "@/firebase/firebaseConfig";
 import LoadingComponent from "@/app/components/LoadingComponent";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccountInfo } from "@/app/store/slices/context";
 // import SnackbarComponent from "@/app/components/SnackbarComponent";
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const user_info = useSelector((state: RootState) => state.context.user_info);
+
+  useEffect(() => {
+    if (user_info.id_user) {
+      router.replace(`/views/dashboard/reports_main`);
+      return;
+    }
+  }, [user_info.id_user]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -23,24 +35,30 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log("reponse", response);
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("reponse", userCredentials);
       setErrorMsg("");
 
-      if (!response) {
-        //     showAlert(
-        //       "No se encontró información",
-        //       "Comunícate con atención al cliente"
-        //     );
+      if (userCredentials.user) {
+        const response = await getUserInfo(userCredentials.user.uid);
+        if (!response) {
+          setErrorMsg(
+            "No se encontró información, Comunícate con atención al cliente"
+          );
+        }
+        const serializableUserInfo = {
+          ...response,
+          updated_at: response.updated_at?.toDate().toISOString(), // o `.toMillis()` si prefieres número
+        };
+        dispatch(setAccountInfo(serializableUserInfo));
+        router.push(`/views/dashboard/reports_main`);
         setIsLoading(false);
         return;
       }
-      // Redirige a otra página o muestra mensaje
-      alert("Inicio de sesión exitoso");
-      setIsLoading(false);
-
-      router.push(`/views/dashboard/reports_main`);
-      return;
     } catch (error: unknown) {
       console.error(error);
       setErrorMsg("Credenciales incorrectas o error de conexión.");

@@ -8,7 +8,10 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "@/app/lib/theme";
 import { open_sans } from "./fonts";
 import { Provider } from "react-redux";
-import store from "../app/store";
+
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./store";
+
 export default function RootLayout({
   children,
 }: {
@@ -18,13 +21,15 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${open_sans.className} antialiased`}>
         <Provider store={store}>
-          <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
+          <PersistGate loading={null} persistor={persistor}>
+            <AppRouterCacheProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
 
-              {children}
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+                {children}
+              </ThemeProvider>
+            </AppRouterCacheProvider>
+          </PersistGate>
         </Provider>
       </body>
     </html>

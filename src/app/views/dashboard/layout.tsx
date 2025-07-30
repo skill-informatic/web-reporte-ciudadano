@@ -3,9 +3,12 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const user_info = useSelector((state: RootState) => state.context.user_info);
 
   const { primary_title, secundary_title } = {
     primary_title: "Reporte CiudadanoMX",
@@ -40,6 +43,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     className={`list_li ${
                       pathname.startsWith(item.href) ? "active" : ""
                     }`}
+                    prefetch
                   >
                     <span className="icon">{item.icon}</span> {item.label}
                   </Link>
@@ -56,10 +60,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <p>Mi Centro de Trabajo</p>
             </div>
             <div className="topbar-center">
-              <h1>Acapulco De Juarez Guerrero</h1>
+              <h1>
+                {user_info.city} {user_info.state}
+              </h1>
             </div>
             <div className="topbar-right">
-              <span className="profile-icon">👤</span>
+              <Link href={"/views/dashboard/profile"}>
+                <span className="profile-icon">👤</span>
+              </Link>
             </div>
           </header>
 
