@@ -4,7 +4,8 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
 import LoadingComponent from "@/app/components/LoadingComponent";
-import SnackbarComponent from "@/app/components/SnackbarComponent";
+import { useRouter } from "next/navigation";
+// import SnackbarComponent from "@/app/components/SnackbarComponent";
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
@@ -12,7 +13,7 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const router = useRouter();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -26,17 +27,19 @@ export default function LoginPage() {
       console.log("reponse", response);
       setErrorMsg("");
 
-      //  if (!response) {
-      //     showAlert(
-      //       "No se encontró información",
-      //       "Comunícate con atención al cliente"
-      //     );
-      //     setIsLoading(false);
-      //     return;
-      //   }
+      if (!response) {
+        //     showAlert(
+        //       "No se encontró información",
+        //       "Comunícate con atención al cliente"
+        //     );
+        setIsLoading(false);
+        return;
+      }
       // Redirige a otra página o muestra mensaje
       alert("Inicio de sesión exitoso");
       setIsLoading(false);
+
+      router.push(`/views/dashboard/reports_main`);
       return;
     } catch (error: unknown) {
       console.error(error);
@@ -74,11 +77,11 @@ export default function LoginPage() {
             )}
             {errorMsg && <p className={styles.error}>{errorMsg}</p>}
           </form>
-          <SnackbarComponent
+          {/* <SnackbarComponent
             text="Error al iniciar sesion"
             type="error"
             open={true}
-          />
+          /> */}
         </div>
       </div>
     </div>
