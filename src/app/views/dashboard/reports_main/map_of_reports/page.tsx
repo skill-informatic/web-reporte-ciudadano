@@ -3,65 +3,49 @@
 
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { Button, IconButton, Input, InputAdornment } from "@mui/material";
+import { Button } from "@mui/material";
 import { FaArrowLeft } from "react-icons/fa";
-import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import {
   filterDataSelected,
+  getCoordinatesFromQuery,
   optionsReports,
   optionTypeColorReport,
 } from "@/app/utils";
-import { TypesCategory, TypesData } from "@/app/models/globalInfo.types";
+import { TypesData } from "@/app/models/globalInfo.types";
 import { listenToReports } from "@/firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import LoadingComponent from "@/app/components/LoadingComponent";
+import SelectComponent from "@/app/components/SelectComponenet";
+import SearchInput from "@/app/components/SearchInput";
 const MapWithMarkers = dynamic(() => import("@/app/components/MapComponent"), {
   ssr: false,
 });
 
 const ReportMapPage = () => {
   // obtener reportes mediante el municipio del usuario
-  const DEFAULT_POSITION: [number, number] = [19.4326, -99.1332]; // CDMX
   const router = useRouter();
   const user_info = useSelector((state: RootState) => state.context.user_info);
+  const initial_coords = useSelector(
+    (state: RootState) => state.context.initial_coords
+  );
   // filtrar municipios por categoria
   const [selectedOption, setSelectedOption] = useState("");
   const [reports, setReports] = useState<TypesData[]>([]);
   const [search, setSearch] = useState("");
-  const [center, setCenter] = useState<[number, number]>(DEFAULT_POSITION);
+  const [center, setCenter] = useState<[number, number]>(initial_coords);
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState<TypesData>({} as TypesData);
-  const [loading, setLoading] = useState(false);
-  const getCoordsForMunicipality = async () => {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          user_info.city + ", México"
-        )}`
-      );
-      const data = await response.json();
-      if (data?.[0]) {
-        const lat = parseFloat(data[0].lat);
-        const lon = parseFloat(data[0].lon);
-        setCenter([lat, lon]);
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error("Error geolocalizando municipio:", err);
-    }
-  };
+
   useEffect(() => {
     if (!user_info.city) return;
 
-    setLoading(true);
-    getCoordsForMunicipality();
     const unsubscribe = listenToReports(
       user_info.city,
       (data) => {
         console.log("Datos actualizados en tiempo real:", data);
-        setReports(data); // tu estado local
+        setReports(data);
       },
       (error: unknown) => {
         console.log("error", error);
@@ -70,31 +54,21 @@ const ReportMapPage = () => {
     );
 
     return () => {
-      unsubscribe(); // Se detiene el listener cuando el componente se desmonta
+      unsubscribe();
     };
   }, []);
 
   const handleOptions = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
   };
+
   const handleSearch = async () => {
     if (!search.trim()) return;
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          search
-        )}`
-      );
-      const data = await res.json();
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        setCenter([parseFloat(lat), parseFloat(lon)]);
-      } else {
-        alert("Ubicación no encontrada.");
-      }
-    } catch (error) {
-      console.error("Error en la búsqueda:", error);
-      alert("Error al buscar ubicación.");
+    const coords = await getCoordinatesFromQuery(search);
+    if (coords) {
+      setCenter(coords);
+    } else {
+      alert("Ubicación no encontrada.");
     }
   };
 
@@ -119,69 +93,28 @@ const ReportMapPage = () => {
           <Button onClick={() => router.back()}>
             <FaArrowLeft size={20} color="#FFF" />
           </Button>
-          <Input
-            placeholder="Buscar Código Postal o Ciudad"
+          <SearchInput
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            sx={{
-              backgroundColor: "white",
-              borderRadius: "8px",
-              paddingLeft: "0.5rem",
-              height: "32px",
-              fontSize: "14px",
-              width: "250px",
-            }}
-            disableUnderline
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
-              </InputAdornment>
-            }
+            onChange={setSearch}
+            onSearch={handleSearch}
+            placeholder={"Buscar Código Postal o Ciudad"}
           />
-          <IconButton
-            onClick={() => {
-              handleSearch();
-
-              console.log("search");
-            }}
-            size="small"
-          >
-            <SearchIcon htmlColor="white" />
-          </IconButton>
-          <select
-            id="options"
-            value={selectedOption}
+          <SelectComponent
+            options={optionsReports}
+            selectedOption={selectedOption}
             onChange={handleOptions}
-            style={{
-              height: "32px",
-              borderRadius: ".5rem",
-              paddingLeft: ".5rem",
-            }}
-          >
-            <option value="">Mostrar Todas las categorias</option>
-            {optionsReports.map((report: TypesCategory) => {
-              return (
-                <option key={report.value} value={report.value}>
-                  {report.label}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        {loading ? (
-          <LoadingComponent text="Cargando Mapa..." />
-        ) : (
-          <MapWithMarkers
-            optionTypeColor={optionTypeColorReport}
-            center={center}
-            markers={reportsFilts}
-            onMarkerClick={(marker) => {
-              setReport(marker);
-              setOpen(true);
-            }}
           />
-        )}
+        </div>
+
+        <MapWithMarkers
+          optionTypeColor={optionTypeColorReport}
+          center={center}
+          markers={reportsFilts}
+          onMarkerClick={(marker) => {
+            setReport(marker);
+            setOpen(true);
+          }}
+        />
       </div>
     </div>
   );

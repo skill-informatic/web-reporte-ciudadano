@@ -1,19 +1,29 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { getCoordinatesFromQuery } from "@/app/utils";
+import { setInitialCoords } from "@/app/store/slices/context";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const user_info = useSelector((state: RootState) => state.context.user_info);
-
+  const dispatch = useDispatch();
   const { primary_title, secundary_title } = {
     primary_title: "Reporte CiudadanoMX",
     secundary_title: "Panel de Contenido",
   };
+  useEffect(() => {
+    const loadInitialCoords = async () => {
+      const coords = await getCoordinatesFromQuery(user_info.city + ", México");
+      dispatch(setInitialCoords(coords));
+      console.log("coords", coords);
+    };
+    loadInitialCoords();
+  }, []);
 
   // Lista de rutas del menú
   const menuItems = [

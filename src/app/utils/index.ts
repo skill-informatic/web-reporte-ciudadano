@@ -182,3 +182,27 @@ export const filterDataSelected = (
     return data.category === filterSelected;
   });
 };
+
+export const getCoordinatesFromQuery = async (
+  query: string
+): Promise<[number, number] | null> => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+        query
+      )}`
+    );
+    const data = await response.json();
+    console.log("response", data);
+    if (data?.[0]) {
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+      return [lat, lon];
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener coordenadas:", error);
+    return null;
+  }
+};

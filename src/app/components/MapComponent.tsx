@@ -1,8 +1,14 @@
 // components/MapComponent.tsx
 "use client";
 
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { TypesData } from "../models/globalInfo.types";
@@ -15,7 +21,15 @@ interface MapWithMarkersProps {
   onMarkerClick?: (marker: TypesData) => void;
   isSetMarker?: boolean;
 }
+const ChangeView: React.FC<{ center: [number, number] }> = ({ center }) => {
+  const map = useMap();
 
+  useEffect(() => {
+    map.setView(center);
+  }, [center, map]);
+
+  return null;
+};
 const MapComponent: React.FC<MapWithMarkersProps> = ({
   optionTypeColor,
   center,
@@ -51,7 +65,7 @@ const MapComponent: React.FC<MapWithMarkersProps> = ({
     >
       {/* <ChangeView center={center} /> */}
       {isSetMarker ? <InternalClickHandler /> : null}
-
+      <ChangeView center={center} />
       <TileLayer
         attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

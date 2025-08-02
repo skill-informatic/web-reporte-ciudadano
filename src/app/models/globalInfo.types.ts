@@ -16,6 +16,7 @@ export interface Context {
   user_info: UserInfoType;
   report_info: TypesData;
   place_info: TypesDataPlace;
+  initial_coords: [number, number];
 }
 
 export type typeSessionOptionsError = {

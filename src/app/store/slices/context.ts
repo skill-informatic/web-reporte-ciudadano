@@ -50,6 +50,7 @@ const initialState: Context = {
     updated_at: "",
     geohash: "",
   },
+  initial_coords: [19.4326, -99.1332],
 };
 
 export const contextSlice = createSlice({
@@ -65,6 +66,10 @@ export const contextSlice = createSlice({
     },
     resetLoginInfo: (state) => {
       state.user_info = initialState.user_info;
+    },
+    setInitialCoords: (state, action) => {
+      console.log("action", action);
+      state.initial_coords = action.payload;
     },
     // Report
     setReportInfo: (state, action) => {
@@ -91,6 +96,7 @@ export const {
   setReportInfo,
   resetReportInfo,
   setPlaceInfo,
+  setInitialCoords,
 } = contextSlice.actions;
 
 export default contextSlice.reducer;
