@@ -2,8 +2,8 @@
 // Import the functions you need from the SDKs you need
 import {
   errorMessages,
-  TypesDataReport,
-  TypesDataReportPost,
+  TypesData,
+  TypesDataPost,
   UploadImageErrors,
   UserInfoType,
 } from "@/app/models/globalInfo.types";
@@ -18,6 +18,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -116,7 +117,40 @@ export const uploadImageToFirebase = async (
     );
   }
 };
+export const listenToReports = (
+  city: string,
+  onSuccess: (data: any[]) => void,
+  onError: (error: unknown) => void
+) => {
+  try {
+    const q = query(
+      collection(db, "reports"),
+      where("city", "==", city),
+      where("status", "!=", "finalizado")
+    );
 
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        onSuccess(data);
+      },
+      (error) => {
+        console.error("Error escuchando reports en tiempo real:", error);
+        onError(error);
+      }
+    );
+
+    return unsubscribe; // Para cancelar el listener cuando ya no lo necesites
+  } catch (error) {
+    console.error("Error al inicializar listener de reports:", error);
+    onError(error);
+    return () => {}; // función vacía como fallback
+  }
+};
 export const getReportsByUserId = async (id_user: string) => {
   try {
     const q = query(
@@ -134,7 +168,7 @@ export const getReportsByUserId = async (id_user: string) => {
     throw new Error(errorMessages[error.code] || `${error.message || error}`);
   }
 };
-export const postReport = async (report: TypesDataReportPost) => {
+export const postReport = async (report: TypesDataPost) => {
   try {
     const auth = getAuth();
 
@@ -170,7 +204,7 @@ export const postReport = async (report: TypesDataReportPost) => {
   }
 };
 
-export const putReportById = async (report: TypesDataReport) => {
+export const putReportById = async (report: TypesData) => {
   try {
     if (!report.id_user) {
       throw new Error("El UID es necesario para actualizar el commentario.");

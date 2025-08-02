@@ -23,6 +23,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     { href: "/views/dashboard/map", icon: "🗺️", label: "Mapa" },
     { href: "/views/dashboard/account", icon: "👥", label: "Cuentas" },
   ];
+  console.log("user_info", user_info);
 
   return (
     <ProtectedRoute>

@@ -14,7 +14,7 @@ export interface UserInfoType {
 export type UserUpdateInfo = Omit<UserInfoType, "created_at" | "role">;
 export interface Context {
   user_info: UserInfoType;
-  report_info: TypesDataReport;
+  report_info: TypesData;
   place_info: TypesDataPlace;
 }
 
@@ -148,7 +148,7 @@ export const errorMessages: { [key: string]: string } = {
   internal: "Error interno del servidor. Intenta más tarde.",
 };
 
-export type TypesDataReportPost = {
+export type TypesDataPost = {
   title: string;
   content: string;
   category: string;
@@ -158,13 +158,15 @@ export type TypesDataReportPost = {
   id_user: string;
   city: string;
   state: string;
-  status: "pendiente" | "en_proceso" | "finalizado";
+  location?: unknown;
+  // "pendiente" | "en_proceso" | "finalizado";
+  status: string;
+  geohash?: string;
+  created_at: string | FieldValue | Timestamp;
 };
 
-export interface TypesDataReport extends TypesDataReportPost {
+export interface TypesData extends TypesDataPost {
   id: string;
-  geohash?: string;
-  created_at: string;
   updated_at?: string;
 }
 export interface TypesCategory {

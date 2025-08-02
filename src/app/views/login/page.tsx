@@ -55,7 +55,6 @@ export default function LoginPage() {
           updated_at: response.updated_at?.toDate().toISOString(), // o `.toMillis()` si prefieres número
         };
         dispatch(setAccountInfo(serializableUserInfo));
-        router.push(`/views/dashboard/reports_main`);
         setIsLoading(false);
         return;
       }

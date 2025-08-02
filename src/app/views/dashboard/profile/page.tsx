@@ -24,6 +24,7 @@ const Page = () => {
   const router = useRouter();
   const [isEditable, setIsEditable] = useState(false);
   const [formData, setFormData] = useState({
+    ...user_info,
     email: user_info?.email || "",
     phone: user_info?.phone?.toString() || "",
   });
