@@ -1,5 +1,5 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
-import { TypesCategory, TypesData } from "../models/globalInfo.types";
+import { TypeCategory, TypeDataGet } from "../models/globalInfo.types";
 export const formatDate = (date: string | Timestamp | FieldValue): string => {
   let parsedDate: Date;
 
@@ -104,7 +104,7 @@ export const optionTypeTextNews: { [key: string]: string } = {
   locales: "Locales",
   crime: "Crimen",
 };
-export const optionsNews: TypesCategory[] = [
+export const optionsNews: TypeCategory[] = [
   { value: "politica", label: "Política" },
   { value: "economia", label: "Economía" },
   { value: "internacionales", label: "Internacionales" },
@@ -127,7 +127,7 @@ export const optionsNews: TypesCategory[] = [
   { value: "locales", label: "Locales" },
   { value: "crimen", label: "Crimen" },
 ];
-export const optionsReports: TypesCategory[] = [
+export const optionsReports: TypeCategory[] = [
   { value: "aguas_negras", label: "Aguas negras" },
   { value: "baches", label: "Baches" },
   { value: "fuga_agua", label: "Fuga de agua" },
@@ -145,7 +145,7 @@ export const status = [
   { label: "Finalizado", value: "finalizado" },
 ];
 
-export const optionsPlaces: TypesCategory[] = [
+export const optionsPlaces: TypeCategory[] = [
   { value: "playas", label: "Playas" },
   { value: "miradores", label: "Miradores" },
   { value: "monumentos_historicos", label: "Monumentos históricos" },
@@ -197,10 +197,10 @@ export const optionTypeTextPlaces: { [key: string]: string } = {
   festivales_eventos: "Festivales y Eventos",
 };
 export const filterDataSelected = (
-  datas: TypesData[],
+  datas: TypeDataGet[],
   filterSelected: string
 ) => {
-  return datas.filter((data: TypesData) => {
+  return datas.filter((data: TypeDataGet) => {
     if (filterSelected === "") return data;
     return data.category === filterSelected;
   });

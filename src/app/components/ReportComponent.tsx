@@ -4,13 +4,13 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import {
   TypeCoord,
-  TypesCategory,
-  TypesDataPost,
+  TypeCategory,
+  TypeDataPostBeforePost,
 } from "../models/globalInfo.types";
 import TextInputComponent from "./TextInputComponent";
 import TextareaComponent from "./TextareaComponent";
 
-const initialData: TypesDataPost = {
+const initialData: TypeDataPostBeforePost = {
   title: "",
   content: "",
   category: "",
@@ -21,11 +21,10 @@ const initialData: TypesDataPost = {
   city: "",
   state: "",
   status: "pendiente",
-  created_at: new Date().toISOString(),
 };
 
 interface ReportComponentProps {
-  categories: TypesCategory[];
+  categories: TypeCategory[];
   selectedPoint: TypeCoord | null;
 }
 
@@ -33,7 +32,7 @@ export default function ReportComponent({
   selectedPoint,
   categories,
 }: ReportComponentProps) {
-  const [formData, setFormData] = useState<TypesDataPost>(initialData);
+  const [formData, setFormData] = useState<TypeDataPostBeforePost>(initialData);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -195,7 +194,7 @@ export default function ReportComponent({
         <option value="" disabled>
           Selecciona una categoría
         </option>
-        {categories.map((option: TypesCategory) => (
+        {categories.map((option: TypeCategory) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>

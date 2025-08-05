@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { TypesCategory } from "../models/globalInfo.types";
+import { TypeCategory } from "../models/globalInfo.types";
 
 interface PickerComponentProps {
-  options: TypesCategory[];
+  options: TypeCategory[];
   selectedOption: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }

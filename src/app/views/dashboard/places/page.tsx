@@ -1,14 +1,14 @@
 "use client";
 
 import CardContainer from "@/app/components/CardContainer";
-import { CardTypes } from "@/app/models/globalInfo.types";
+import { TypeCard } from "@/app/models/globalInfo.types";
 import { Grid } from "@mui/material";
 
 import React from "react";
 import { FaMapMarkedAlt, FaRegFileAlt, FaCamera } from "react-icons/fa";
 
 const page = () => {
-  const cards: CardTypes[] = [
+  const cards: TypeCard[] = [
     {
       id: "",
       route: "",

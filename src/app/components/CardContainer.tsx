@@ -1,9 +1,9 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { CardTypes } from "../models/globalInfo.types";
+import { TypeCard } from "../models/globalInfo.types";
 import Link from "next/link";
 
 interface Types {
-  cards: CardTypes[];
+  cards: TypeCard[];
   withColumn?: false;
 }
 
@@ -53,7 +53,7 @@ const CardContainer = ({ cards, withColumn }: Types) => {
         },
       }}
     >
-      {cards.map((carta: CardTypes, index: number) => (
+      {cards.map((carta: TypeCard, index: number) => (
         <Card
           key={index}
           sx={{

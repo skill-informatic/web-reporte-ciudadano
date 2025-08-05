@@ -13,7 +13,7 @@ import {
   optionTypeColorReport,
   status,
 } from "@/app/utils";
-import { TypesData } from "@/app/models/globalInfo.types";
+import { TypeDataGet } from "@/app/models/globalInfo.types";
 import { listenToReports } from "@/firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -31,11 +31,11 @@ const ReportMapPage = () => {
     (state: RootState) => state.context.initial_coords
   );
   const [selectedOption, setSelectedOption] = useState("");
-  const [reports, setReports] = useState<TypesData[]>([]);
+  const [reports, setReports] = useState<TypeDataGet[]>([]);
   const [search, setSearch] = useState("");
   const [center, setCenter] = useState<[number, number]>(initial_coords);
   const [open, setOpen] = useState(false);
-  const [report, setReport] = useState<TypesData>({} as TypesData);
+  const [report, setReport] = useState<TypeDataGet>({} as TypeDataGet);
 
   useEffect(() => {
     if (!user_info.city) return;
@@ -77,7 +77,7 @@ const ReportMapPage = () => {
     setOpen(false);
     console.log("id delete", id);
   };
-  const handleUpdate = async (updatedReport: TypesData) => {
+  const handleUpdate = async (updatedReport: TypeDataGet) => {
     // setOpen(false);
     setReport(updatedReport);
   };

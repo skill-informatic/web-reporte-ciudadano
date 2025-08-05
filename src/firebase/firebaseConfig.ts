@@ -2,8 +2,8 @@
 // Import the functions you need from the SDKs you need
 import {
   errorMessages,
-  TypesData,
-  TypesDataPost,
+  TypeDataPost,
+  TypeDataPostBeforePost,
   UploadImageErrors,
   TypeUserInfo,
 } from "@/app/models/globalInfo.types";
@@ -168,7 +168,7 @@ export const getReportsByUserId = async (id_user: string) => {
     throw new Error(errorMessages[error.code] || `${error.message || error}`);
   }
 };
-export const postReport = async (report: TypesDataPost) => {
+export const postReport = async (report: TypeDataPostBeforePost) => {
   try {
     const auth = getAuth();
 
@@ -204,7 +204,7 @@ export const postReport = async (report: TypesDataPost) => {
   }
 };
 
-export const putReportById = async (report: TypesData) => {
+export const putReportById = async (report: TypeDataPost) => {
   try {
     if (!report.id_user) {
       throw new Error("El UID es necesario para actualizar el commentario.");

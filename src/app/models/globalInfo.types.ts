@@ -2,7 +2,7 @@ import { FieldValue, Timestamp } from "firebase/firestore";
 import { ReactNode } from "react";
 
 export interface TypeUserInfo {
-  id_user?: string;
+  id_user: string;
   email: string;
   phone: string;
   role: "admin" | "supervisor" | "user";
@@ -14,8 +14,8 @@ export interface TypeUserInfo {
 export type UserUpdateInfo = Omit<TypeUserInfo, "created_at" | "role">;
 export interface Context {
   user_info: TypeUserInfo;
-  report_info: TypesData;
-  place_info: TypesDataPlace;
+  report_info: TypeDataPost;
+  place_info: TypeDataPostPlace;
   initial_coords: [number, number];
 }
 
@@ -98,7 +98,7 @@ export const registerOptionsError: typeRegisterOptionsError = {
     "Ocurrió un error desconocido. Intenta más tarde o contacta soporte.",
 };
 
-export interface CardTypes {
+export interface TypeCard {
   id: string;
   name: string;
   route: string;
@@ -151,28 +151,30 @@ export interface TypeCoord {
   longitude: number;
 }
 
-export type TypesDataPost = {
+export type TypeDataPostBeforePost = {
+  id_user: string;
   title: string;
   content: string;
   category: string;
   image_url: string;
   coords: TypeCoord;
   phone: string;
-  id_user: string;
   city: string;
   state: string;
   location?: unknown;
   // "pendiente" | "en_proceso" | "finalizado";
   status: string;
   geohash?: string;
-  created_at: string | FieldValue | Timestamp;
 };
 
-export interface TypesData extends TypesDataPost {
-  id: string;
-  updated_at?: string;
+export interface TypeDataPost extends TypeDataPostBeforePost {
+  created_at: string | FieldValue | Timestamp;
+  updated_at: string | FieldValue | Timestamp;
 }
-export interface TypesCategory {
+export interface TypeDataGet extends TypeDataPost {
+  id: string;
+}
+export interface TypeCategory {
   value: string;
   label: string;
 }
@@ -209,23 +211,23 @@ export interface TypeNewsGet extends TypeNews {
   id: string;
 }
 
-export type TypesDataPostPlaces = {
+export type TypeDataPostBeforePostPlaces = {
+  id_user: string;
   title: string;
   content: string;
   category: string;
   image_url: string;
   coords: { latitude: number; longitude: number };
   phone: string;
-  id_user: string;
   city: string;
   state: string;
   status: "close" | "open";
   location?: unknown;
   geohash?: string;
-  created_at?: string | FieldValue | Timestamp;
+  created_at: string | FieldValue | Timestamp;
 };
 
-export interface TypesDataPlace extends TypesDataPostPlaces {
+export interface TypeDataPostPlace extends TypeDataPostBeforePostPlaces {
   id: string;
   updated_at?: string;
 }

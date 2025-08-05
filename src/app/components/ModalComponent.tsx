@@ -13,8 +13,9 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import {
-  TypesCategory,
-  TypesData,
+  TypeCategory,
+  TypeDataGet,
+  TypeDataPost,
   TypeUserInfo,
 } from "../models/globalInfo.types";
 import { calculateRows, formatDate, optionsReports } from "../utils";
@@ -25,10 +26,10 @@ import TextareaComponent from "./TextareaComponent";
 type Props = {
   open: boolean;
   onClose: () => void;
-  report: TypesData;
-  onUpdate?: (updated: TypesData) => void;
+  report: TypeDataGet;
+  onUpdate?: (updated: TypeDataGet) => void;
   onDelete?: (id: string) => void;
-  status: TypesCategory[];
+  status: TypeCategory[];
   optionTypeColor: {
     [key: string]: string;
   };
@@ -47,7 +48,7 @@ const ModalComponent: React.FC<Props> = ({
 }) => {
   console.log("report", report);
   const [tabIndex, setTabIndex] = useState(0);
-  const [editableReport, setEditableReport] = useState<TypesData>(report);
+  const [editableReport, setEditableReport] = useState<TypeDataGet>(report);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const ModalComponent: React.FC<Props> = ({
     setTabIndex(0);
   }, [report]);
 
-  const handleChange = (field: keyof TypesData, value: string) => {
+  const handleChange = (field: keyof TypeDataPost, value: string) => {
     setEditableReport((prev) => ({
       ...prev,
       [field]: value,

@@ -10,14 +10,14 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { TypeCoord, TypesData } from "../models/globalInfo.types";
+import { TypeCoord, TypeDataGet } from "../models/globalInfo.types";
 import { pinPopIcon } from "@/assets/icons";
 
 interface MapWithMarkersProps {
   optionTypeColor: { [key: string]: string };
   center: [number, number];
-  markers: TypesData[];
-  onMarkerClick?: (marker: TypesData) => void;
+  markers: TypeDataGet[];
+  onMarkerClick?: (marker: TypeDataGet) => void;
   onSelectedPoint?: (point: TypeCoord) => void;
   selectedPoint?: TypeCoord | null;
   isSetMarker?: boolean;
@@ -73,7 +73,7 @@ const MapComponent: React.FC<MapWithMarkersProps> = ({
         attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {markers.map((marker: TypesData) => (
+      {markers.map((marker: TypeDataGet) => (
         <Marker
           key={marker.id}
           position={[marker.coords.latitude, marker.coords.longitude]}

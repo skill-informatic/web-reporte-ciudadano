@@ -1,7 +1,7 @@
 "use client";
 
 import CardContainer from "@/app/components/CardContainer";
-import { CardTypes } from "@/app/models/globalInfo.types";
+import { TypeCard } from "@/app/models/globalInfo.types";
 import { Grid } from "@mui/material";
 
 import React from "react";
@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 
 const page = () => {
-  const cards: CardTypes[] = [
+  const cards: TypeCard[] = [
     {
       id: "report",
       route: "/views/dashboard/reports_main/report",

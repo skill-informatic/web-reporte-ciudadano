@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { TypesCategory } from "../models/globalInfo.types";
+import { TypeCategory } from "../models/globalInfo.types";
 
 /**
  * Props del componente SelectComponent.
@@ -12,7 +12,7 @@ import { TypesCategory } from "../models/globalInfo.types";
  * @property onChange - Función que se ejecuta cuando el usuario cambia la selección.
  */
 interface CategorySelectProps {
-  options: TypesCategory[];
+  options: TypeCategory[];
   selectedOption: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
