@@ -12,8 +12,9 @@ import {
   getCoordinatesFromQuery,
   optionsReports,
   optionTypeColorReport,
+  status,
 } from "@/app/utils";
-import { TypesData } from "@/app/models/globalInfo.types";
+import { TypeCoord, TypesData } from "@/app/models/globalInfo.types";
 import { listenToReports } from "@/firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -21,6 +22,7 @@ import ModalComponent from "@/app/components/ModalComponent";
 import LoadingComponent from "@/app/components/LoadingComponent";
 import SelectComponent from "@/app/components/SelectComponenet";
 import SearchInput from "@/app/components/SearchInput";
+import ReportComponent from "@/app/components/ReportComponent";
 
 const MapWithMarkers = dynamic(() => import("@/app/components/MapComponent"), {
   ssr: false,
@@ -40,9 +42,12 @@ const PageReports = () => {
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState<TypesData>({} as TypesData);
   const [loading, setLoading] = useState(false);
+
+  const [selectedPoint, setSelectedPoint] = useState<TypeCoord | null>(null);
+
   useEffect(() => {
-    setLoading(true);
     if (!user_info.city) return;
+    setLoading(true);
 
     const loadInitialCoords = async () => {
       const coords = await getCoordinatesFromQuery(user_info.city + ", México");
@@ -69,7 +74,10 @@ const PageReports = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [user_info.city]);
+  const handleSelectedPoint = (point: TypeCoord) => {
+    setSelectedPoint(point);
+  };
 
   const handleOptions = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
@@ -84,9 +92,16 @@ const PageReports = () => {
       alert("Ubicación no encontrada.");
     }
   };
-
+  const handleClose = async () => {
+    setOpen(false);
+  };
   const handleDelete = async (id: string) => {
+    setOpen(false);
     console.log("id delete", id);
+  };
+  const handleUpdate = async (updatedReport: TypesData) => {
+    // setOpen(false);
+    setReport(updatedReport);
   };
 
   const reportsFilts = useMemo(() => {
@@ -147,19 +162,38 @@ const PageReports = () => {
                   setReport(marker);
                   setOpen(true);
                 }}
+                onSelectedPoint={handleSelectedPoint}
+                selectedPoint={selectedPoint}
                 isSetMarker={true}
               />
             )}
           </div>
-          <div style={{ height: "100%", minWidth: "100%" }}>
-            <ModalComponent
-              open={open}
-              onClose={() => setOpen(false)}
-              report={report}
-              onUpdate={(updatedReport) => setReport(updatedReport)}
-              onDelete={handleDelete}
+          <div
+            style={{
+              height: "100%",
+              minWidth: "100%",
+              maxHeight: "100%",
+              overflowY: "auto",
+              boxSizing: "border-box",
+              backgroundColor: "#fff",
+            }}
+          >
+            {/* Pasar por props si es tipo reports o site of interes */}
+            <ReportComponent
+              selectedPoint={selectedPoint}
+              categories={optionsReports}
             />
           </div>
+          <ModalComponent
+            open={open}
+            onClose={handleClose}
+            report={report}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            status={status}
+            optionTypeColor={optionTypeColorReport}
+            user_info={user_info}
+          />
         </Grid>
       </div>
     </div>

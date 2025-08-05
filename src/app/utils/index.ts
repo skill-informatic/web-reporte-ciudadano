@@ -1,4 +1,22 @@
+import { FieldValue, Timestamp } from "firebase/firestore";
 import { TypesCategory, TypesData } from "../models/globalInfo.types";
+export const formatDate = (date: string | Timestamp | FieldValue): string => {
+  let parsedDate: Date;
+
+  if (date instanceof Timestamp) {
+    parsedDate = date.toDate();
+  } else if (typeof date === "string") {
+    parsedDate = new Date(date);
+  } else {
+    throw new Error("Fecha no válida");
+  }
+
+  const day = String(parsedDate.getDate()).padStart(2, "0");
+  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+  const year = parsedDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
 
 export const getYourApproximateLocation = (): Promise<[number, number]> => {
   return new Promise((resolve, reject) => {
@@ -121,6 +139,11 @@ export const optionsReports: TypesCategory[] = [
   { value: "arbol_riesgo", label: "Árbol caído o en riesgo" },
   { value: "semaforo_descompuesto", label: "Semáforo descompuesto" },
 ];
+export const status = [
+  { label: "Pendiente", value: "pendiente" },
+  { label: "En Proceso", value: "en_proceso" },
+  { label: "Finalizado", value: "finalizado" },
+];
 
 export const optionsPlaces: TypesCategory[] = [
   { value: "playas", label: "Playas" },
@@ -205,4 +228,25 @@ export const getCoordinatesFromQuery = async (
     console.error("Error al obtener coordenadas:", error);
     return null;
   }
+};
+
+// Función para calcular número de filas para textarea
+export const calculateRows = (text: string, minRows = 3, maxRows = 15) => {
+  // Contar líneas por saltos de línea
+  const lineBreaks = text.split("\n").length;
+
+  // Aproximadamente cuántos caracteres por fila (ajusta según diseño)
+  const charsPerRow = 40;
+
+  // Calcular filas por largo total dividido chars por fila
+  const lengthRows = Math.ceil(text.length / charsPerRow);
+
+  // Tomar el máximo entre líneas y filas calculadas
+  let rows = Math.max(lineBreaks, lengthRows);
+
+  // Limitar entre min y max filas
+  if (rows < minRows) rows = minRows;
+  if (rows > maxRows) rows = maxRows;
+
+  return rows;
 };

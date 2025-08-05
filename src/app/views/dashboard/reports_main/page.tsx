@@ -3,7 +3,6 @@
 import CardContainer from "@/app/components/CardContainer";
 import { CardTypes } from "@/app/models/globalInfo.types";
 import { Grid } from "@mui/material";
-// import { useRouter } from "next/navigation";
 
 import React from "react";
 import {
@@ -63,9 +62,6 @@ const page = () => {
             md: "4fr 400px",
             lg: "3fr 400px",
           },
-
-          // justifyItems: "center",
-          // rowGap: "1rem",
           columnGap: "1rem",
           height: "100%",
           justifyContent: { xs: "center", sm: "left" },

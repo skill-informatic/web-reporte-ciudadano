@@ -11,7 +11,11 @@ import {
 import { Edit, Close } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { changeAccountInfo, resetLoginInfo } from "@/app/store/slices/context";
+import {
+  changeAccountInfo,
+  resetInitialCoords,
+  resetLoginInfo,
+} from "@/app/store/slices/context";
 import { auth, putUserInfo } from "@/firebase/firebaseConfig";
 import { logout } from "@/app/store/slices/user";
 import { useRouter } from "next/navigation";
@@ -48,6 +52,7 @@ const Page = () => {
     await signOut(auth);
     dispatch(resetLoginInfo());
     dispatch(logout());
+    dispatch(resetInitialCoords());
     router.push("/views/login");
   };
 

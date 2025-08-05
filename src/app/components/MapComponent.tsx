@@ -1,7 +1,6 @@
-// components/MapComponent.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -11,66 +10,69 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { TypesData } from "../models/globalInfo.types";
+import { TypeCoord, TypesData } from "../models/globalInfo.types";
 import { pinPopIcon } from "@/assets/icons";
-//hacer las variables mas genericas y los types igual para que pueda ser mas reutilizable
+
 interface MapWithMarkersProps {
   optionTypeColor: { [key: string]: string };
   center: [number, number];
   markers: TypesData[];
   onMarkerClick?: (marker: TypesData) => void;
+  onSelectedPoint?: (point: TypeCoord) => void;
+  selectedPoint?: TypeCoord | null;
   isSetMarker?: boolean;
 }
+
 const ChangeView: React.FC<{ center: [number, number] }> = ({ center }) => {
   const map = useMap();
-
   useEffect(() => {
     map.setView(center);
   }, [center, map]);
-
   return null;
 };
+
 const MapComponent: React.FC<MapWithMarkersProps> = ({
   optionTypeColor,
   center,
   markers,
   onMarkerClick,
+  onSelectedPoint,
+  selectedPoint,
   isSetMarker = false,
 }) => {
-  const [selectedMarker, setSelectedMarker] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-
-  //pasar por props handler selected marker
   const InternalClickHandler = () => {
     useMapEvents({
       click(e) {
         e.originalEvent.preventDefault();
         e.originalEvent.stopPropagation();
-        setSelectedMarker({
+
+        const coords = {
           latitude: e.latlng.lat,
           longitude: e.latlng.lng,
-        });
-        console.log("Coordenadas seleccionadas:", e.latlng);
+        };
+
+        if (onSelectedPoint) {
+          onSelectedPoint(coords);
+        }
+
+        console.log("Coordenadas seleccionadas:", coords);
       },
     });
     return null;
   };
+
   return (
     <MapContainer
       center={center}
       zoom={13}
       style={{ maxHeight: "100%", height: "100%", width: "100%" }}
     >
-      {/* <ChangeView center={center} /> */}
-      {isSetMarker ? <InternalClickHandler /> : null}
+      {isSetMarker && <InternalClickHandler />}
       <ChangeView center={center} />
       <TileLayer
         attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-
       {markers.map((marker: TypesData) => (
         <Marker
           key={marker.id}
@@ -85,11 +87,11 @@ const MapComponent: React.FC<MapWithMarkersProps> = ({
             className: "",
             iconSize: [16, 16],
           })}
-        ></Marker>
+        />
       ))}
-      {selectedMarker && (
+      {selectedPoint?.latitude && selectedPoint?.longitude && (
         <Marker
-          position={[selectedMarker.latitude, selectedMarker.longitude]}
+          position={[selectedPoint.latitude, selectedPoint.longitude]}
           icon={pinPopIcon}
         />
       )}

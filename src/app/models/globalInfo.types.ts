@@ -1,7 +1,7 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 import { ReactNode } from "react";
 
-export interface UserInfoType {
+export interface TypeUserInfo {
   id_user?: string;
   email: string;
   phone: string;
@@ -11,9 +11,9 @@ export interface UserInfoType {
   city: string;
   state: string;
 }
-export type UserUpdateInfo = Omit<UserInfoType, "created_at" | "role">;
+export type UserUpdateInfo = Omit<TypeUserInfo, "created_at" | "role">;
 export interface Context {
-  user_info: UserInfoType;
+  user_info: TypeUserInfo;
   report_info: TypesData;
   place_info: TypesDataPlace;
   initial_coords: [number, number];
@@ -104,8 +104,6 @@ export interface CardTypes {
   route: string;
   icono: React.JSX.Element | string | ReactNode;
   subtitle?: string;
-  action?: (id: string) => void;
-  //   action: (id: string) => void;
 }
 export const UploadImageErrors = {
   NO_IMAGE: "No hay imagen para subir",
@@ -148,13 +146,17 @@ export const errorMessages: { [key: string]: string } = {
   "auth/weak-password": "La contraseña es demasiado débil.",
   internal: "Error interno del servidor. Intenta más tarde.",
 };
+export interface TypeCoord {
+  latitude: number;
+  longitude: number;
+}
 
 export type TypesDataPost = {
   title: string;
   content: string;
   category: string;
   image_url: string;
-  coords: { latitude: number; longitude: number };
+  coords: TypeCoord;
   phone: string;
   id_user: string;
   city: string;

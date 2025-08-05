@@ -11,26 +11,25 @@ import {
   getCoordinatesFromQuery,
   optionsReports,
   optionTypeColorReport,
+  status,
 } from "@/app/utils";
 import { TypesData } from "@/app/models/globalInfo.types";
 import { listenToReports } from "@/firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import LoadingComponent from "@/app/components/LoadingComponent";
 import SelectComponent from "@/app/components/SelectComponenet";
 import SearchInput from "@/app/components/SearchInput";
+import ModalComponent from "@/app/components/ModalComponent";
 const MapWithMarkers = dynamic(() => import("@/app/components/MapComponent"), {
   ssr: false,
 });
 
 const ReportMapPage = () => {
-  // obtener reportes mediante el municipio del usuario
   const router = useRouter();
   const user_info = useSelector((state: RootState) => state.context.user_info);
   const initial_coords = useSelector(
     (state: RootState) => state.context.initial_coords
   );
-  // filtrar municipios por categoria
   const [selectedOption, setSelectedOption] = useState("");
   const [reports, setReports] = useState<TypesData[]>([]);
   const [search, setSearch] = useState("");
@@ -71,6 +70,17 @@ const ReportMapPage = () => {
       alert("Ubicación no encontrada.");
     }
   };
+  const handleClose = async () => {
+    setOpen(false);
+  };
+  const handleDelete = async (id: string) => {
+    setOpen(false);
+    console.log("id delete", id);
+  };
+  const handleUpdate = async (updatedReport: TypesData) => {
+    // setOpen(false);
+    setReport(updatedReport);
+  };
 
   const reportsFilts = useMemo(() => {
     if (!selectedOption) return reports;
@@ -89,7 +99,6 @@ const ReportMapPage = () => {
             gap: "1rem",
           }}
         >
-          {/* hacer que regrese a la pagina anterior */}
           <Button onClick={() => router.back()}>
             <FaArrowLeft size={20} color="#FFF" />
           </Button>
@@ -114,6 +123,16 @@ const ReportMapPage = () => {
             setReport(marker);
             setOpen(true);
           }}
+        />
+        <ModalComponent
+          user_info={user_info}
+          open={open}
+          onClose={handleClose}
+          report={report}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+          status={status}
+          optionTypeColor={optionTypeColorReport}
         />
       </div>
     </div>

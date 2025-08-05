@@ -12,8 +12,8 @@ export const pinPopIcon = L.divIcon({
       box-sizing: border-box;
     "></div>
   `,
-  className: "", // No usar clases de Leaflet que interfieran
+  className: "",
   iconSize: [18, 18],
-  iconAnchor: [9, 18], // para que la punta del pin esté en la posición exacta
+  iconAnchor: [9, 18],
   popupAnchor: [0, -18],
 });

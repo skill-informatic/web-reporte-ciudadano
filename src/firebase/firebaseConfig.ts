@@ -5,7 +5,7 @@ import {
   TypesData,
   TypesDataPost,
   UploadImageErrors,
-  UserInfoType,
+  TypeUserInfo,
 } from "@/app/models/globalInfo.types";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -60,7 +60,7 @@ export const getUserInfo = async (uid: string) => {
     throw new Error(errorMessages[error.code] || `${error.message || error}`);
   }
 };
-export async function postUserInfo(data: UserInfoType) {
+export async function postUserInfo(data: TypeUserInfo) {
   try {
     if (!data || !data.id_user) {
       throw new Error("El objeto de datos es inválido o falta el UID.");
@@ -71,7 +71,7 @@ export async function postUserInfo(data: UserInfoType) {
   }
 }
 
-export const putUserInfo = async (data: UserInfoType) => {
+export const putUserInfo = async (data: TypeUserInfo) => {
   try {
     if (!data.id_user) {
       throw new Error(

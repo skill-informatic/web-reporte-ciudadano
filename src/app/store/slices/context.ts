@@ -71,6 +71,9 @@ export const contextSlice = createSlice({
       console.log("action", action);
       state.initial_coords = action.payload;
     },
+    resetInitialCoords: (state) => {
+      state.initial_coords = initialState.initial_coords;
+    },
     // Report
     setReportInfo: (state, action) => {
       state.report_info = action.payload;
@@ -97,6 +100,7 @@ export const {
   resetReportInfo,
   setPlaceInfo,
   setInitialCoords,
+  resetInitialCoords,
 } = contextSlice.actions;
 
 export default contextSlice.reducer;

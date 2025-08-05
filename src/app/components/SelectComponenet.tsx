@@ -2,14 +2,7 @@
 "use client";
 
 import React from "react";
-
-/**
- * Tipo que representa una categoría con su valor y etiqueta legible.
- */
-export type TypesCategory = {
-  value: string; // Valor que se usará internamente (por ejemplo, en una API o lógica de filtro)
-  label: string; // Texto que se muestra al usuario en el <option>
-};
+import { TypesCategory } from "../models/globalInfo.types";
 
 /**
  * Props del componente SelectComponent.

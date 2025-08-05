@@ -9,11 +9,18 @@ import {
   DialogTitle,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { TypesData } from "../models/globalInfo.types";
+import {
+  TypesCategory,
+  TypesData,
+  TypeUserInfo,
+} from "../models/globalInfo.types";
+import { calculateRows, formatDate, optionsReports } from "../utils";
+import TextInputComponent from "./TextInputComponent";
+import PickerComponent from "./PickerComponent";
+import TextareaComponent from "./TextareaComponent";
 
 type Props = {
   open: boolean;
@@ -21,6 +28,11 @@ type Props = {
   report: TypesData;
   onUpdate?: (updated: TypesData) => void;
   onDelete?: (id: string) => void;
+  status: TypesCategory[];
+  optionTypeColor: {
+    [key: string]: string;
+  };
+  user_info: TypeUserInfo;
 };
 
 const ModalComponent: React.FC<Props> = ({
@@ -29,7 +41,11 @@ const ModalComponent: React.FC<Props> = ({
   report,
   onUpdate,
   onDelete,
+  status,
+  optionTypeColor,
+  user_info,
 }) => {
+  console.log("report", report);
   const [tabIndex, setTabIndex] = useState(0);
   const [editableReport, setEditableReport] = useState<TypesData>(report);
   const [isEditing, setIsEditing] = useState(false);
@@ -51,6 +67,15 @@ const ModalComponent: React.FC<Props> = ({
     if (onUpdate) onUpdate(editableReport);
     setIsEditing(false);
   };
+
+  // Traer desde props status
+  const getStatusLabel = (value: string) =>
+    status.find((s) => s.value === value)?.label || value;
+
+  //traer desde props optionsReports
+  const getCategoryLabel = (value: string) =>
+    optionsReports.find((c) => c.value === value)?.label || value;
+  console.log(editableReport.created_at);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
@@ -89,7 +114,6 @@ const ModalComponent: React.FC<Props> = ({
                 minHeight: 250,
                 height: "100%",
                 position: "relative",
-                // borderRadius: 1,
                 overflow: "hidden",
               }}
             >
@@ -104,113 +128,185 @@ const ModalComponent: React.FC<Props> = ({
               />
             </Box>
 
-            {isEditing ? (
-              <>
-                <TextField
-                  label="Título"
-                  fullWidth
-                  margin="dense"
+            {/* Título */}
+            <Box
+              mt={2}
+              sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+            >
+              <Typography fontWeight="bold">Título:</Typography>
+              {isEditing ? (
+                <TextInputComponent
+                  placeholder="Título..."
+                  type="text"
                   value={editableReport.title}
                   onChange={(e) => handleChange("title", e.target.value)}
                 />
-                <TextField
-                  label="Estado"
-                  fullWidth
-                  margin="dense"
-                  value={editableReport.status}
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    height: "2.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {editableReport.title}
+                </Typography>
+              )}
+            </Box>
+
+            {/* Estado */}
+            <Box
+              mt={1}
+              sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+            >
+              <Typography fontWeight="bold">Estado:</Typography>
+              {isEditing ? (
+                <PickerComponent
+                  selectedOption={editableReport.status}
+                  options={status}
                   onChange={(e) => handleChange("status", e.target.value)}
                 />
-                <TextField
-                  label="Categoría"
-                  fullWidth
-                  margin="dense"
-                  value={editableReport.category}
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    height: "2.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {getStatusLabel(editableReport.status)}
+                </Typography>
+              )}
+            </Box>
+
+            <Box height={4} bgcolor="#F44336" borderRadius={1} my={1} />
+
+            {/* Categoría */}
+            <Box
+              mt={1}
+              sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+            >
+              <Typography fontWeight="bold">Categoría:</Typography>
+              {isEditing ? (
+                <PickerComponent
+                  selectedOption={editableReport.category}
+                  options={optionsReports}
                   onChange={(e) => handleChange("category", e.target.value)}
                 />
-                <TextField
-                  label="Descripción"
-                  fullWidth
-                  margin="dense"
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    height: "2.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {getCategoryLabel(editableReport.category)}
+                </Typography>
+              )}
+              <Box
+                height={4}
+                bgcolor={optionTypeColor[editableReport.category]}
+                borderRadius={1}
+                my={1}
+              />
+            </Box>
+
+            {/* Descripción */}
+            <Box
+              mt={1}
+              sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+            >
+              <Typography fontWeight="bold">Descripción:</Typography>
+              {isEditing ? (
+                <TextareaComponent
+                  placeholder="Descripción..."
                   value={editableReport.content}
                   onChange={(e) => handleChange("content", e.target.value)}
-                  multiline
-                  rows={6}
+                  rows={calculateRows(editableReport.content)}
                 />
-              </>
-            ) : (
-              <>
-                <Box mt={1}>
-                  <Typography fontWeight="bold">Título:</Typography>
-                  <Typography>{editableReport.title}</Typography>
-                </Box>
-                <Box mt={1}>
-                  <Typography fontWeight="bold">Estado:</Typography>
-                  <Typography>{editableReport.status}</Typography>
-                </Box>
-                <Box height={4} bgcolor="#F44336" borderRadius={1} my={1} />
-                <Box mt={1}>
-                  <Typography fontWeight="bold">Categoría:</Typography>
-                  <Typography>{editableReport.category}</Typography>
-                </Box>
-                <Box height={4} bgcolor="black" borderRadius={1} my={1} />
-                <Box mt={1}>
-                  <Typography fontWeight="bold">Descripción:</Typography>
-                  <Typography>{editableReport.content}</Typography>
-                </Box>
-              </>
-            )}
-
-            <Typography align="right" fontSize="small" mt={2}>
-              {editableReport.city}, {editableReport.state}
-            </Typography>
+              ) : (
+                <Typography sx={{ fontSize: "1rem", minHeight: "6rem" }}>
+                  {editableReport.content}
+                </Typography>
+              )}
+            </Box>
+            <Box
+              component={"div"}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "2rem",
+              }}
+            >
+              <Box
+                component={"div"}
+                sx={{ display: "flex", flexDirection: "row" }}
+              >
+                <Typography fontWeight="bold" align="left" fontSize="small">
+                  Creado el:{" "}
+                </Typography>
+                {editableReport.created_at ? (
+                  <Typography align="left" fontSize="small">
+                    {formatDate(editableReport.created_at)}
+                  </Typography>
+                ) : null}
+              </Box>
+              <Typography align="right" fontSize="small">
+                {editableReport.city}, {editableReport.state}
+              </Typography>
+            </Box>
           </>
         ) : (
           <Typography mt={2}>
-            Aquí irían los comentarios del reporte... (puedes colocar una lista
-            o TextField aquí según lo que necesites).
+            Aquí irían los comentarios del reporte...
           </Typography>
         )}
       </DialogContent>
 
-      {/* Botones fijos al final */}
       <Box p={2} display="flex" flexDirection="column" gap={1}>
-        {tabIndex === 0 && (
-          <Box display="flex" gap={2}>
-            {isEditing ? (
+        {user_info.role === "supervisor" ||
+          (user_info.role === "admin" && tabIndex === 0 && (
+            <Box display="flex" gap={2}>
+              {isEditing ? (
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={handleSave}
+                  sx={{
+                    backgroundColor: "#8B5CF6",
+                    "&:hover": { backgroundColor: "#8B5CF9" },
+                  }}
+                >
+                  Guardar
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => setIsEditing(true)}
+                  sx={{
+                    backgroundColor: "#8B5CF6",
+                    "&:hover": { backgroundColor: "#8B5CF9" },
+                  }}
+                >
+                  Editar
+                </Button>
+              )}
+
               <Button
                 variant="contained"
+                color="error"
                 fullWidth
-                onClick={handleSave}
-                sx={{
-                  backgroundColor: "#8B5CF6",
-                  "&:hover": { backgroundColor: "#7B1FA2" },
-                }}
+                onClick={() => onDelete?.(editableReport.id)}
               >
-                Guardar
+                Eliminar
               </Button>
-            ) : (
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={() => setIsEditing(true)}
-                sx={{
-                  backgroundColor: "#8B5CF6",
-                  "&:hover": { backgroundColor: "#7B1FA2" },
-                }}
-              >
-                Editar
-              </Button>
-            )}
-            <Button
-              variant="contained"
-              color="error"
-              fullWidth
-              onClick={() => onDelete?.(editableReport.id)}
-            >
-              Eliminar
-            </Button>
-          </Box>
-        )}
+            </Box>
+          ))}
 
         <Button
           variant="contained"

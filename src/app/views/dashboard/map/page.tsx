@@ -1,7 +1,6 @@
-// app/reports/page.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@mui/material";
 import { FaArrowLeft } from "react-icons/fa";
