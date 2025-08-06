@@ -70,7 +70,6 @@ export default function ReportComponent({
         gap: "1rem",
         maxWidth: "90%",
         margin: "auto",
-        // padding: "1rem",
       }}
     >
       <div
@@ -88,14 +87,13 @@ export default function ReportComponent({
         }}
         onDragOver={(e) => e.preventDefault()}
         style={{
-          //   border: "2px dashed gray",
           width: "100%",
           marginTop: "1rem",
           padding: "1rem",
           textAlign: "center",
           cursor: "pointer",
           backgroundColor: "#f9f9f9",
-          minHeight: "220px", // Tamaño fijo
+          minHeight: "220px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

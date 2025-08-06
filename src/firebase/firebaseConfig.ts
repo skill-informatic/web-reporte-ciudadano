@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Import the functions you need from the SDKs you need
+
 import {
   errorMessages,
   TypeDataPost,
@@ -28,10 +28,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { geohashForLocation } from "geofire-common";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDg1Om99AdmRnZOywBcBAjxRQxStGOQFJs",
   authDomain: "reporte-ciudadano-23b56.firebaseapp.com",

@@ -23,8 +23,6 @@ export const useAuthListener = () => {
       }
       if (user) {
         dispatch(login({ uid: user.uid, email: user.email || "" }));
-
-        // Si ya hay usuario y estás en /views/login, redirige a dashboard
       } else {
         dispatch(logout());
         router.push("/views/login");

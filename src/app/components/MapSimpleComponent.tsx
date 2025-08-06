@@ -1,11 +1,9 @@
-// components/MapSimpleComponent.tsx
 "use client";
 
 import React from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-//hacer las variables mas genericas y los types igual para que pueda ser mas reutilizable
 interface MapWithMarkersProps {
   center: [number, number];
 }

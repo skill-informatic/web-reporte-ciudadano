@@ -22,7 +22,6 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     logout(state) {
-      // verificar si realmente asi se reinicia el state
       state.user = initialState.user;
     },
   },
